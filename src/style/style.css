@@ -12,12 +12,13 @@ body {
 
 button {
   cursor: pointer;
+  border: 0;
 }
 
 .wrapper {
   background: #050522;
   box-shadow: 0px 0px 50px 5px rgba(6, 6, 34, 0.4);
-  height: 100vh;
+  height: 100svh;
   text-align: center;
   position: relative;
   display: flex;
