@@ -115,6 +115,8 @@ function checkPassword(cardNode) {
   } else {
     labelNode1.textContent = 'пароли не совпадают';
     labelNode2.textContent = 'пароли не совпадают';
+    setTimeout(() => (labelNode1.textContent = ''), 3000);
+    setTimeout(() => (labelNode2.textContent = ''), 3000);
   }
 }
 
