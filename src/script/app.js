@@ -36,7 +36,7 @@ const createCardRegister = () => {
                <label for="" class="label"></label>
               </div>
               <div>
-                <input type="password" class="input" placeholder="password" id = "pass1" data-required="true"
+                <input type="password" class="input" id = "pass1" placeholder="password" data-required="true"
               data-min-length="8"
               data-max-length="30"/>
                <label for="" class="label"></label>
@@ -61,11 +61,7 @@ const createCardRegister = () => {
               </div>
   `;
   const inputNode = container.querySelectorAll('.input');
-  
-  // const pass1 = card__register.getElementById('pass1');
-  // const pass2 = card__register.getElementById('pass2');
-  // pass1 == pass2 ? alert('lддавыаыа') : alert('777777777');
-
+  const cardNode = container.querySelector('.card__form');
   headerNode.style.filter = 'brightness(50%)';
   // Node красного крестика
   const inputImgNode = container.querySelector('.input__img');
@@ -74,33 +70,52 @@ const createCardRegister = () => {
   formNode.addEventListener('submit', (evt) => {
     evt.preventDefault();
     checkInput(inputNode);
+    if (checkInput(inputNode)) {
+      checkPassword(cardNode);
+    }
   });
   return container;
 };
+
 // функция проверки Инпута
 function checkInput(inputNode) {
-  // let checked = true;
-  for (const input of inputNode) {
+  return Array.from(inputNode).every((input) => {
     const labelNode = input.parentNode.querySelector('.label');
     labelNode.textContent = '';
+
     if (!input.value.length && input.dataset.required) {
       labelNode.textContent = 'это поле обязательное';
-      // checked = false;
-    } else if (
+      return false;
+    }
+    if (
       input.value.length <= input.dataset.minLength &&
       input.dataset.required
     ) {
       labelNode.textContent = `должно быть больше ${input.dataset.minLength}-го символов`;
-      // checked = false;
-    } else if (
+      return false;
+    }
+    if (
       input.value.length >= input.dataset.maxLength &&
       input.dataset.required
     ) {
       labelNode.textContent = `должно быть меньше ${input.dataset.maxLength}-ти символов`;
-      // checked = false;
+      return false;
     }
+    return true;
+  });
+}
+
+function checkPassword(cardNode) {
+  const pass1 = cardNode.querySelector('#pass1');
+  const pass2 = cardNode.querySelector('#pass2');
+  const labelNode1 = pass1.parentNode.querySelector('.label');
+  const labelNode2 = pass2.parentNode.querySelector('.label');
+  if (pass1.value === pass2.value) {
+    return true;
+  } else {
+    labelNode1.textContent = 'пароли не совпадают';
+    labelNode2.textContent = 'пароли не совпадают';
   }
-  // return checked;
 }
 
 // функция карточка логина
