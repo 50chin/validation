@@ -30,9 +30,17 @@ const createCardRegister = () => {
                <label for="" class="label"></label>
                </div>
                <div>
-                <input type="text" class="input" placeholder="course"
-              data-min-length="1"
-              data-max-length="12"/>
+                <input type="text" class="input" placeholder="choice course" list = "browsers" data-required="true
+              data-min-length="8"
+              data-max-length="30">
+               <datalist id="browsers">
+    <option value="Chrome">
+    <option value="Firefox">
+    <option value="Yandex Browser">
+    <option value="Opera">
+    <option value="Safari">
+    <option value="Microsoft Edge">
+  </datalist>
                <label for="" class="label"></label>
               </div>
               <div>
@@ -73,6 +81,9 @@ const createCardRegister = () => {
     if (checkInput(inputNode)) {
       checkPassword(cardNode);
     }
+    if (checkPassword(cardNode)) {
+      sendFile(formNode);
+    }
   });
   return container;
 };
@@ -104,20 +115,51 @@ function checkInput(inputNode) {
     return true;
   });
 }
-
+//  Функция проверка пароли
 function checkPassword(cardNode) {
   const pass1 = cardNode.querySelector('#pass1');
   const pass2 = cardNode.querySelector('#pass2');
   const labelNode1 = pass1.parentNode.querySelector('.label');
   const labelNode2 = pass2.parentNode.querySelector('.label');
-  if (pass1.value === pass2.value) {
+  if (
+    pass1.value === pass2.value &&
+    pass1.value.length > 0 &&
+    pass2.value.length > 0
+  ) {
+    pass1.style.border = '2px  solid green';
+    pass2.style.border = '2px solid green';
     return true;
-  } else {
+  } else if (
+    pass1.value !== pass2.value &&
+    pass1.value.length > 8 &&
+    pass2.value.length > 8
+  ) {
+    pass1.style.border = '2px  solid red';
+    pass2.style.border = '2px solid red';
     labelNode1.textContent = 'пароли не совпадают';
     labelNode2.textContent = 'пароли не совпадают';
     setTimeout(() => (labelNode1.textContent = ''), 3000);
     setTimeout(() => (labelNode2.textContent = ''), 3000);
+    return false;
+  } else {
+    return;
   }
+}
+
+const data = new FormData();
+// функция ФормДата
+function sendFile(formNode) {
+  const inputNode = formNode.querySelectorAll('.input');
+  console.log(inputNode[0].value);
+  data.append('login', inputNode[0].value);
+  data.append('course', inputNode[1].value);
+  data.append('password1', inputNode[2].value);
+  data.append('password2', inputNode[3].value);
+  for (const input of inputNode) {
+    input.value = '';
+    input.style.border = '2px  solid black';
+  }
+  console.log(data);
 }
 
 // функция карточка логина
